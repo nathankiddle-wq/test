@@ -1,0 +1,22 @@
+Dynamic Insight = 
+VAR TopChannel =
+    MAXX(
+        TOPN(
+            1,
+            ALL('Touchpoint Table'[channel]),
+            [Linear MTA Value (Normalised Fix)],
+            DESC
+        ),
+        'Touchpoint Table'[channel]
+    )
+VAR TopValue =
+    IF(
+        NOT ISBLANK(TopChannel),
+        CALCULATE(
+            [Linear MTA Value (Normalised Fix)],
+            'Touchpoint Table'[channel] = TopChannel
+        )
+    )
+RETURN
+"Top Channel: " & TopChannel &
+" with value " & FORMAT(TopValue, "#,##0")
