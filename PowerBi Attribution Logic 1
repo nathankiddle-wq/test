@@ -1,0 +1,14 @@
+//Attribution Measure 1:
+Value Per Touch(Normalised) = 
+VAR JourneyValue =
+    CALCULATE(
+        [Normalised MA Value],
+        ALLEXCEPT(Sheet1,Sheet1[Journey_id])
+    )
+    VAR TouchCount =
+        CALCULATE(
+            COUNTROWS(Sheet1),
+            ALLEXCEPT(Sheet1,Sheet1[Journey_id])
+        )
+    RETURN
+        DIVIDE(JourneyValue,TouchCount)
