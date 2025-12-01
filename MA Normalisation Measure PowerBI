@@ -1,0 +1,19 @@
+Normalised MA Value = 
+VAR TotalMAs =
+    COUNTROWS ( 'MA_Data' ) // counts every row in MA data table under filters applied
+VAR CompletedDeals =
+    CALCULATE (
+        COUNTROWS ( 'Transaction_Data' ),
+        'Transaction_Data'[Completion_Status] = "Completed"
+    ) // Counts the number of completed transactions under the current filters.
+VAR TotalFee =
+    CALCULATE (
+        SUM ( 'Transaction_Data'[Fee_Amount] ),
+        'Transaction_Data'[Completion_Status] = "Completed"
+    )//Sums the fee amounts from transactions that are marked as Completed (respecting current filters).
+VAR AvgFee =
+    DIVIDE ( TotalFee, CompletedDeals )//Computes the average fee per completed deal (handles divide-by-zero safely).
+VAR Conversion =
+    DIVIDE ( CompletedDeals, TotalMAs )//Calculates completed deals per MA (i.e., conversion rate from MA count to completed deals)
+RETURN
+    AvgFee * Conversion //Multiplies average fee per deal by deals per MA, which equals total completed fees evenly allocated per MA in-context.
