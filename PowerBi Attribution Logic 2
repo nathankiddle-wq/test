@@ -1,0 +1,6 @@
+//Measure 2:
+Linear MTA Value (Normalised Fix) = 
+SUMX(
+    Sheet1,
+    [Value Per Touch(Normalised)]
+)
